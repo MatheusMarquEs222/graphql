@@ -2,6 +2,7 @@ import { gql } from "apollo-server-express";
 import clientTypeDefs from "./client.schema";
 import productTypeDefs from "./product.schema";
 import saleTypeDefs from "./sale.schema";
+import scheduleTypeDefs from "./schedule.schema";
 
 const rootTypeDefs = gql`
   type Query
@@ -12,5 +13,6 @@ export default [
   rootTypeDefs, 
   clientTypeDefs, 
   productTypeDefs,
-  saleTypeDefs
+  saleTypeDefs,
+  scheduleTypeDefs
 ];
