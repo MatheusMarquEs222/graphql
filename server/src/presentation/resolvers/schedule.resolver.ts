@@ -2,6 +2,12 @@ import { ScheduleModel } from "../../infra/models/schedule.model"
 
 const scheduleResolver = {
     Query: {
+        schedules: async () => {
+            return await ScheduleModel.find({})
+                .populate('client')
+                .populate('product')
+                .populate('sale');
+        },
         schedulesByClient: async (_: any, { clientId }: any) => {
             return await ScheduleModel.find({client: clientId})
                 .populate('client')
