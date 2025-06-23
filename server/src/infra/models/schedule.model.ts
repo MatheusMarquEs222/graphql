@@ -1,8 +1,8 @@
 import { Document, model, Schema, Types } from 'mongoose';
 
-export type ScheduleStatus = 'pending' | 'scheduled' | 'completed' | 'overdue';
+export type ScheduleStatus = 'pending' | 'scheduled' | 'done' | 'late';
 
-export interface Schedule extends Document {
+export interface ISchedule extends Document {
     client: Types.ObjectId;
     product: Types.ObjectId;
     sale: Types.ObjectId;
@@ -12,7 +12,7 @@ export interface Schedule extends Document {
     createdAt: Date;
 }
 
-const scheduleSchema = new Schema<Schedule>({
+const scheduleSchema = new Schema<ISchedule>({
     client: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
     product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
     sale: { type: Schema.Types.ObjectId, ref: 'Sale', required: true },
@@ -27,4 +27,4 @@ const scheduleSchema = new Schema<Schedule>({
     createdAt: { type: Date, default: Date.now }
 });
 
-export const ScheduleModel = model<Schedule>('Schedule', scheduleSchema);
+export const ScheduleModel = model<ISchedule>('Schedule', scheduleSchema);

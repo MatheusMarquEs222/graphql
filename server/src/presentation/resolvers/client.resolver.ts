@@ -1,15 +1,18 @@
-import { ClientModel } from "../../infra/models/client.model"
+import { createClientUseCase } from "../../application/usecases/client/createClient.usecase";
+import { listClientUseCase } from "../../application/usecases/client/listClient.usecase";
+import { MongooseClientRepository } from "../../domain/repositories/mongoose/mongooseClient.repository";
+
+const clientRepo = new MongooseClientRepository();
 
 const clientResolver = {
     Query: {
         clients: async () => {
-            return await ClientModel.find();
+            return await listClientUseCase(clientRepo);
         },
     },
     Mutation: {
         createClient: async (_: any, { input }: any) => {
-            const client = await ClientModel.create(input);
-            return client;
+            return await createClientUseCase(input, clientRepo);
         },
     },
 };

@@ -1,6 +1,6 @@
 import { Document, model, Schema, Types } from 'mongoose';
 
-export interface Sale extends Document {
+export interface ISale extends Document {
     client: Types.ObjectId;
     items: {
         product: Types.ObjectId;
@@ -11,7 +11,7 @@ export interface Sale extends Document {
     saleDate: Date;
 }
 
-const saleSchema = new Schema<Sale>({
+const saleSchema = new Schema<ISale>({
     client: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
     items: [{
         product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
@@ -22,4 +22,4 @@ const saleSchema = new Schema<Sale>({
     saleDate: { type: Date, default: Date.now }
 });
 
-export const SaleModel = model<Sale>('Sale', saleSchema);
+export const SaleModel = model<ISale>('Sale', saleSchema);

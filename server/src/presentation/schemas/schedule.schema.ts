@@ -14,8 +14,8 @@ const scheduleTypeDefs = gql `
     enum ScheduleStatus {
         pending
         scheduled
-        late
         done
+        late
     }
 
     type Query {
@@ -23,6 +23,15 @@ const scheduleTypeDefs = gql `
         schedulesByStatus(status: ScheduleStatus!): [Schedule!]!
         schedulesByClient(clientId: ID!): [Schedule!]!
         schedulesByDateRange(start: String!, end: String!): [Schedule!]!
+    }
+
+    input UpdateScheduleStatusInput {
+        scheduleId: ID!
+        status: ScheduleStatus!
+    }
+
+    type Mutation {
+        updateScheduleStatus(input: UpdateScheduleStatusInput!): Schedule!
     }
 `;
 

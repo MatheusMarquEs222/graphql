@@ -1,6 +1,6 @@
 import { Document, model, Schema } from "mongoose";
 
-export interface Client extends Document {
+export interface IClient extends Document {
   name: string;
   email: string;
   phone: string;
@@ -14,7 +14,7 @@ export interface Client extends Document {
   createdAt?: Date;
 }
 
-const clientSchema = new Schema<Client>({
+const clientSchema = new Schema<IClient>({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     phone: { type: String, required: true },
@@ -28,4 +28,4 @@ const clientSchema = new Schema<Client>({
     createdAt: { type: Date, default: Date.now }
 });
 
-export const ClientModel = model<Client>('Client', clientSchema);
+export const ClientModel = model<IClient>('Client', clientSchema);
