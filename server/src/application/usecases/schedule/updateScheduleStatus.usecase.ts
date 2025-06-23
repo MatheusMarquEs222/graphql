@@ -2,6 +2,7 @@ import { IUpdateScheduleDTO } from "../../../domain/dtos/schedule/updateSchedule
 import { IScheduleRepository } from "../../../domain/repositories/schedule.repository";
 import { IProduct } from "../../../infra/models/product.model";
 import { ISchedule } from "../../../infra/models/schedule.model";
+import { ScheduleHistoryModel } from "../../../infra/models/scheduleHistory.model";
 
 export const updateScheduleStatusUseCase = async (
     repo: IScheduleRepository,
@@ -17,26 +18,24 @@ export const updateScheduleStatusUseCase = async (
     schedule.status = data.status;
     
     const updatedSchedule = await repo.update(schedule);
-
-    console.log(updatedSchedule)
-
+    
     if (!updatedSchedule) {
         throw new Error(`Erro ao atualizar o agendamento com ID ${data.scheduleId}`);
     }
 
     if (data.status === 'done' && product.maintenanceIntervalDays) {
-        const nextDate = new Date();
-        
-        nextDate.setDate(nextDate.getDate() + product.maintenanceIntervalDays);
-
-        await repo.create({
-            client: schedule.client._id,
-            product: schedule.product._id,
-            sale: schedule.sale._id,
-            scheduledDate: nextDate,
-            status: 'pending',
-            notes: `Novo agendamento gerado após status 'done' de ${schedule._id}`
+        await ScheduleHistoryModel.create({
+            scheduleId: schedule._id,
+            status: 'done',
         });
+
+        const nextDate = new Date();
+        nextDate.setDate(nextDate.getDate() + product.maintenanceIntervalDays);
+        
+        schedule.scheduledDate = nextDate;
+        schedule.status = 'pending';
+
+        return repo.update(schedule);
     }
 
     return updatedSchedule;

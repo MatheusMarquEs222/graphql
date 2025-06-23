@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 
 import typeDefs from '../presentation/schemas';
 import resolvers from '../presentation/resolvers';
+import { scheduleLateCheckJob } from '../infra/jobs/checkLateSchedules.job';
 
 dotenv.config({ path: 'src/main/env/.env' });
 
@@ -21,6 +22,8 @@ const startServer = async () => {
     const PORT = process.env.PORT || 4000;
 
     await connectToDatabase();
+
+    scheduleLateCheckJob();
     
     app.listen(PORT, () => {
         console.log(`🚀 Servidor rodando em http://localhost:${PORT}${server.graphqlPath}`);
