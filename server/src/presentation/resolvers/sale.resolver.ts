@@ -22,9 +22,16 @@ const saleResolver = {
                     throw new Error(`Produto com ID ${item.product} não encontrado`);
                 }
 
-                const unitPrice = item.price !== undefined && item.price !== null
-                    ? item.price
-                    : product.price;
+                if (item.quantity <= 0) {
+                    throw new Error(`Quantidade inválida para o produto com ID ${item.product}`);
+                }
+
+                let unitPrice: number;
+                if (item.price !== undefined && item.price !== null) {
+                    unitPrice = item.price;
+                } else {
+                    unitPrice = product.price * item.quantity;
+                }                
 
                 processedItems.push({
                     product: item.product,
@@ -33,9 +40,12 @@ const saleResolver = {
                 });
             }
 
+            const totalValue = processedItems.reduce((acc, item) => acc + item.price, 0);
+
             const sale = await SaleModel.create({
                 client,
                 items: processedItems,
+                totalValue,
                 saleDate: new Date(),
             });
 
@@ -61,7 +71,11 @@ const saleResolver = {
                 });
             }
 
-            return sale;
+            const populatedSale = await SaleModel.findById(sale._id)
+                .populate('client')
+                .populate('items.product'); 
+
+            return populatedSale;
         },
     },
 };

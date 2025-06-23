@@ -7,6 +7,7 @@ export interface Sale extends Document {
         quantity: number;
         price: number;
     }[];
+    totalValue: number;
     saleDate: Date;
 }
 
@@ -17,6 +18,7 @@ const saleSchema = new Schema<Sale>({
         quantity: { type: Number, required: true },
         price: Number
     }],
+    totalValue: { type: Number, required: true },
     saleDate: { type: Date, default: Date.now }
 });
 

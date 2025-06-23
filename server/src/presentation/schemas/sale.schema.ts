@@ -10,6 +10,7 @@ const saleTypeDefs = gql `
         id : ID!
         client: Client!
         items: [SaleItem!]!
+        totalValue: Float!
         saleDate: String!
     }
 

@@ -26,10 +26,7 @@ const scheduleResolver = {
                     $gte: new Date(start),
                     $lte: new Date(end)
                 },
-            })
-                .populate('client')
-                .populate('product')
-                .populate('sale');
+            }).populate('client').populate('product').populate('sale');
         },
     },
 };
