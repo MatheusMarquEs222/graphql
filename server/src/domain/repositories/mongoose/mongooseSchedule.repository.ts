@@ -13,11 +13,21 @@ export class MongooseScheduleRepository implements IScheduleRepository {
             .populate('sale')
             .exec();
     }
-    update(schedule: ISchedule): Promise<ISchedule> {
-        return schedule.save();
+    async update(schedule: ISchedule): Promise<ISchedule> {
+        const updated = await ScheduleModel.findByIdAndUpdate(
+            schedule._id, 
+            schedule, 
+            { new: true }
+        ).populate('client').populate('product').populate('sale').exec();
+        
+        if (!updated) {
+            throw new Error(`Agendamento com ID ${schedule._id} não encontrado para atualização`);
+        }
+
+        return updated;
     }
-    findAll(): Promise<ISchedule[]> {
-        return ScheduleModel.find({})
+    async findAll(): Promise<ISchedule[]> {
+        return await ScheduleModel.find({})
             .populate('client')
             .populate('product')
             .populate('sale')

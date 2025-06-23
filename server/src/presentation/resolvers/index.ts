@@ -14,5 +14,6 @@ export default {
         ...clientResolver.Mutation,
         ...productResolver.Mutation,
         ...saleResolver.Mutation,
+        ...scheduleResolver.Mutation,
     },
 };
