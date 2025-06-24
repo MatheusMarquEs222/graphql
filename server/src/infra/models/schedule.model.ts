@@ -19,7 +19,7 @@ const scheduleSchema = new Schema<ISchedule>({
     scheduledDate: { type: Date, required: true },
     status: {
         type: String,
-        enum: ['pending', 'scheduled', 'completed', 'overdue'],
+        enum: ['pending', 'scheduled', 'done', 'late'],
         default: 'pending',
         required: true
     },

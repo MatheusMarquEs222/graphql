@@ -1,12 +1,14 @@
 import { gql } from "apollo-server-express"
 
 const scheduleTypeDefs = gql `
+    scalar DateTime
+
     type Schedule {
         id: ID!
         client: Client!
         product: Product!
         sale: Sale!
-        scheduledDate: String!
+        scheduledDate: DateTime!
         status: ScheduleStatus!
         createdAt: String!
     }
