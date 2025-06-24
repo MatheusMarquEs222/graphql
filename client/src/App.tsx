@@ -1,5 +1,5 @@
 import './App.css';
-import ScheduleList from './components/ScheduleList';
+import { ScheduleList } from './components/ScheduleList';
 
 function App() {
   return (
