@@ -13,7 +13,7 @@ export function Navbar() {
   return (
     <header className="w-full bg-white border-b shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-        <h1 className="text-xl font-bold tracking-tight">Conecta - Watterfall</h1>
+        <h1 className="text-xl font-bold tracking-tight">Conecta - Waterfall</h1>
         <nav className="flex gap-6">
           {links.map((link) => (
             <Link
