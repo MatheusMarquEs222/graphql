@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 const links = [
   { name: "Clientes", path: "/clients" },
   { name: "Agendamentos", path: "/schedules" },
+  { name: "Relatórios", path: "/scheduleHistories" },
   { name: "Produtos", path: "/products" },
 ];
 

@@ -10,7 +10,7 @@ const scheduleTypeDefs = gql `
         sale: Sale!
         scheduledDate: DateTime!
         status: ScheduleStatus!
-        createdAt: String!
+        createdAt: DateTime!
     }
 
     enum ScheduleStatus {
