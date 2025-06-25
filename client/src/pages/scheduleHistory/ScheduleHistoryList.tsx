@@ -7,7 +7,6 @@ import { useState } from "react";
 
 export function ScheduleHistoryList() {
     const {data, loading, error} = useQuery(GET_SCHEDULE_HISTORIES);
-    debugger
     const [clientFilter, setClientFilter] = useState("");
     const [productFilter, setProductFilter] = useState("");
     const [dateFilter, setDateFilter] = useState("");

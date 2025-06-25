@@ -1,11 +1,14 @@
 import { gql } from "apollo-server-express";
 
 const clientTypeDefs = gql`
+    scalar DateTime
+
     type Client {
         id: ID!
         name: String!
         email: String!
         phone: String!
+        createdAt: DateTime!
     }
 
     input CreateClientInput {
