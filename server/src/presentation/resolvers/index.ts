@@ -1,6 +1,7 @@
 import clientResolver from "./client.resolver";
 import productResolver from "./product.resolver";
 import saleResolver from "./sale.resolver";
+import scheduleHistoryResolver from "./schedule-history.resolver";
 import scheduleResolver from "./schedule.resolver";
 
 export default {
@@ -9,6 +10,7 @@ export default {
         ...productResolver.Query,
         ...saleResolver.Query,
         ...scheduleResolver.Query,
+        ...scheduleHistoryResolver.Query
     },
     Mutation: {
         ...clientResolver.Mutation,
