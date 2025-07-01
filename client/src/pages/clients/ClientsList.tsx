@@ -3,11 +3,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GET_CLIENTS } from "@/queries/clientQueries";
 import { useQuery } from "@apollo/client";
-import { Plus } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export function ClientsList() {
-    const {data, loading, error} = useQuery(GET_CLIENTS);
+    const {data, loading, error} = useQuery(GET_CLIENTS, {
+        fetchPolicy: 'network-only',
+    });
+    
     const navigate = useNavigate();
 
     if (loading) {
@@ -47,6 +50,13 @@ export function ClientsList() {
                                 <p className="text-sm text-muted-foreground">
                                     {new Date(client.createdAt).toLocaleDateString("pt-BR")}
                                 </p>
+                                <Button
+                                    variant="link"
+                                    onClick={() => navigate(`/clients/new`, { state: { client } })}
+                                    className="text-blue-500 hover:text-blue-700" 
+                                >
+                                    <Pencil className="w-4 h-4 text-muted-foreground"/>
+                                </Button>
                             </div>
                         </CardContent>
                     </Card>  

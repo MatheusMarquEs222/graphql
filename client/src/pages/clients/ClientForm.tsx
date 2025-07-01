@@ -3,22 +3,35 @@ import { useMutation } from "@apollo/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CREATE_CLIENT } from "@/mutations/clientCreate.mutation";
+import { CREATE_CLIENT, UPDATE_CLIENT } from "@/mutations/clientCreate.mutation";
 import { Label } from "@/components/ui/label";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export function ClientForm() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const editingClient = location.state?.client;
+
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
+    name: editingClient?.name || "",
+    email: editingClient?.email || "",
+    phone: editingClient?.phone || "",
   });
 
-  const [createClient, { loading, error, data }] = useMutation(CREATE_CLIENT, {
-    variables: { input: form },
-    onCompleted: () => {
-      setForm({ name: "", email: "", phone: "" });
-    },
-  });
+  const [saveClient, { loading, error, data }] = useMutation(
+    editingClient ? UPDATE_CLIENT : CREATE_CLIENT,
+    {
+      variables: {
+        ...(editingClient
+          ? { input: { ...form, id: editingClient.id } }
+          : { input: form }),
+      },
+      onCompleted: () => {
+        setForm({ name: "", email: "", phone: "" });
+        navigate("/clients"); 
+      },
+    }
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -27,12 +40,14 @@ export function ClientForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name) return;
-    createClient();
+    saveClient();
   };
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">Cadastrar Novo Cliente</h2>
+      <h2 className="text-2xl font-semibold mb-4">
+        {editingClient ? "Editar Cliente" : "Cadastrar Novo Cliente"}
+      </h2>
       <Card className="p-6 shadow-sm border">
         <CardContent className="p-0">
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -70,7 +85,7 @@ export function ClientForm() {
 
             <div className="pt-2">
               <Button type="submit" disabled={loading}>
-                {loading ? "Salvando..." : "Cadastrar Cliente"}
+                {loading ? "Salvando..." : editingClient ? "Atualizar Cliente" : "Cadastrar Cliente"}
               </Button>
             </div>
 

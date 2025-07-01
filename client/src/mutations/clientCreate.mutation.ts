@@ -11,3 +11,14 @@ export const CREATE_CLIENT = gql`
     }
   }
 `;
+
+export const UPDATE_CLIENT = gql`
+  mutation UpdateClient($input: UpdateClientInput!) {
+    updateClient(input: $input) {
+      id
+      name
+      email
+      phone
+    }
+  }
+`;
