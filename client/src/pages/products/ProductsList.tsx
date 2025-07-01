@@ -1,12 +1,16 @@
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { GET_PRODUCTS } from "@/queries/productQueries";
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+import { Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 
 export function ProductList() {
     const { data, loading, error } = useQuery(GET_PRODUCTS);
+    const navigate = useNavigate();
     
     if (error) {
         return  <p className="text-sm text-red-500">
@@ -16,7 +20,17 @@ export function ProductList() {
 
     return (
         <div className="p-6">
-            <h2 className="text-2xl font-semibold mb-4">Produtos Cadastrados</h2>
+            <div className="flex flex-row gap-2">
+                <h2 className="text-2xl font-semibold mb-4">Produtos Cadastrados</h2>
+                <Button
+                    onClick={() => navigate("/products/new")}
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full"
+                    >
+                    <Plus className="w-4 h-4" />
+                </Button>
+            </div>
 
             {loading ? (
                 <div className="space-y-4">

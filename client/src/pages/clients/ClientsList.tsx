@@ -1,10 +1,14 @@
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GET_CLIENTS } from "@/queries/clientQueries";
 import { useQuery } from "@apollo/client";
+import { Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function ClientsList() {
     const {data, loading, error} = useQuery(GET_CLIENTS);
+    const navigate = useNavigate();
 
     if (loading) {
         return <p className="text-sm text-muted">Carregando...</p>;
@@ -18,7 +22,17 @@ export function ClientsList() {
 
     return (
         <div className="p-6">
-            <h2 className="text-2xl font-semibold mb-4">Clientes Cadastrados</h2>
+            <div className="flex flex-row gap-2">
+                <h2 className="text-2xl font-semibold mb-4">Clientes Cadastrados</h2>
+                <Button
+                    onClick={() => navigate("/clients/new")}
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full"
+                    >
+                    <Plus className="w-4 h-4" />
+                </Button>
+            </div>
             <ScrollArea className="h-[600px] rounded-md border p-4">
                 <div className="grid grid-cols-1 gap-4">
                     {data.clients.map((client: any) => (
