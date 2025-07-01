@@ -25,7 +25,7 @@ export const updateScheduleStatusUseCase = async (
 
     if (data.status === 'done' && product.maintenanceIntervalDays) {
         await ScheduleHistoryModel.create({
-            scheduleId: schedule._id,
+            schedule: schedule._id,
             status: 'done',
         });
 
