@@ -24,39 +24,42 @@ export function ClientsList() {
     }
 
     return (
-        <div className="p-6">
-            <div className="flex flex-row gap-2">
-                <h2 className="text-2xl font-semibold mb-4">Clientes Cadastrados</h2>
+        <div className="p-6 w-full max-w-7xl mx-auto">
+            <div className="flex items-center mb-4 gap-2">
+                <h2 className="text-2xl font-semibold">Clientes Cadastrados</h2>
                 <Button
                     onClick={() => navigate("/clients/new")}
                     variant="outline"
                     size="icon"
                     className="rounded-full"
-                    >
+                >
                     <Plus className="w-4 h-4" />
                 </Button>
             </div>
-            <ScrollArea className="h-[600px] rounded-md border p-4">
-                <div className="grid grid-cols-1 gap-4">
+            <ScrollArea className="h-[600px] rounded-md border p-4 bg-gray-50">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                     {data.clients.map((client: any) => (
-                    <Card key={client.id} className="p-4 shadow-sm border">
-                        <CardContent className="p-0">
-                            <div className="flex justify-between items-center">
+                    <Card key={client.id} className="shadow-sm border">
+                        <CardContent className="p-4">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                                 <div>
                                     <h3 className="text-base font-medium">{client.name}</h3>
                                     <p className="text-sm text-muted-foreground">{client.email}</p>
                                     <p className="text-sm text-muted-foreground">{client.phone}</p>
                                 </div>
-                                <p className="text-sm text-muted-foreground">
-                                    {new Date(client.createdAt).toLocaleDateString("pt-BR")}
-                                </p>
-                                <Button
-                                    variant="link"
-                                    onClick={() => navigate(`/clients/new`, { state: { client } })}
-                                    className="text-blue-500 hover:text-blue-700" 
-                                >
-                                    <Pencil className="w-4 h-4 text-muted-foreground"/>
-                                </Button>
+
+                                <div className="flex flex-col gap-2 sm:items-end">
+                                    <p className="text-sm text-muted-foreground">
+                                        {new Date(client.createdAt).toLocaleDateString("pt-BR")}
+                                    </p>
+                                    <Button
+                                        variant="link"
+                                        onClick={() => navigate(`/clients/new`, { state: { client } })}
+                                        className="text-blue-500 hover:text-blue-700 p-0 h-auto"
+                                    >
+                                        <Pencil className="w-4 h-4 text-muted-foreground"/>
+                                    </Button>
+                                </div>
                             </div>
                         </CardContent>
                     </Card>  

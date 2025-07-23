@@ -1,6 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
-import { Navbar } from './components/layout/Navbar';
+import { Sidebar } from './components/layout/Sidebar';
 import { ScheduleList } from './pages/shedules/ScheduleList';
 import { ClientsList } from './pages/clients/ClientsList';
 import { ProductList } from './pages/products/ProductsList';
@@ -11,19 +11,20 @@ import { ProductForm } from './pages/products/ProductForm';
 function App() {
   return (
     <Router>
-      <Navbar />
-      <main className="p-6">
-        <Routes>
-          <Route path='clients' element={ <ClientsList /> } />
-          <Route path='clients/new' element={<ClientForm />} />
-          <Route path='schedules' element={ <ScheduleList/> } />
-          <Route path='scheduleHistories' element={ <ScheduleHistoryList /> } />
-          <Route path='products' element={ <ProductList />} />
-          <Route path='products/new' element={<ProductForm />} />
-        </Routes>
-      </main>
+      <div className="flex min-h-screen">
+        <Sidebar />
+        <main className="flex-1 bg-[#f4f1eb] p-6">
+          <Routes>
+            <Route path="/clients/all" element={<ClientsList />} />
+            <Route path="/clients/new" element={<ClientForm />} />
+            <Route path="/schedules/all" element={<ScheduleList />} />
+            <Route path="/scheduleHistories" element={<ScheduleHistoryList />} />
+            <Route path="/products/all" element={<ProductList />} />
+            <Route path="/products/new" element={<ProductForm />} />
+          </Routes>
+        </main>
+      </div>
     </Router>
-    
   );
 }
 
