@@ -44,13 +44,16 @@ export function ClientForm() {
   };
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">
-        {editingClient ? "Editar Cliente" : "Cadastrar Novo Cliente"}
-      </h2>
-      <Card className="p-6 shadow-sm border">
-        <CardContent className="p-0">
-          <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="p-6 w-full max-w-3xl mx-auto">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl font-semibold">
+          {editingClient ? "Editar Cliente" : "Cadastrar Novo Cliente"}
+        </h2>
+      </div>
+
+      <Card className="shadow-sm border bg-gray-50">
+        <CardContent className="p-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <Label htmlFor="name">Nome</Label>
               <Input
@@ -83,9 +86,14 @@ export function ClientForm() {
               />
             </div>
 
-            <div className="pt-2">
-              <Button type="submit" disabled={loading}>
-                {loading ? "Salvando..." : editingClient ? "Atualizar Cliente" : "Cadastrar Cliente"}
+            <div className="pt-4">
+              <Button 
+                type="submit" 
+                disabled={loading}
+                className="px-4"
+                variant="softButton"
+                >
+                  {loading ? "Salvando..." : editingClient ? "Atualizar Cliente" : "Cadastrar Cliente"}
               </Button>
             </div>
 

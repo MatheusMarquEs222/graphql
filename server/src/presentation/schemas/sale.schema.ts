@@ -23,6 +23,7 @@ const saleTypeDefs = gql `
     input CreateSaleInput {
         client: ID!
         items: [SaleItemInput!]!
+        saleDate: String
     }
 
     type Mutation {

@@ -39,7 +39,7 @@ export function ProductList() {
                 ))}
                 </div>
             ) : (
-                <ScrollArea className="h-[600px] rounded-md border p-4">
+                <ScrollArea className="h-[600px] rounded-md border p-4 bg-gray-50">
                 <div className="grid grid-cols-1 gap-4">
                     {data?.products.map((product: any) => (
                         <Card key={product.id}>

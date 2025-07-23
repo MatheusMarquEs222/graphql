@@ -5,4 +5,5 @@ export interface ICreateSaleDTO {
         quantity: number; // Quantidade do produto
         price?: number; // Preço unitário opcional
     }>;
+    saleDate?: string;
 }

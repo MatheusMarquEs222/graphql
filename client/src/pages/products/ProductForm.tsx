@@ -5,13 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CREATE_PRODUCT } from "@/mutations/ProductCreate.mutation";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export function ProductForm() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const editingProducts = location.state?.products;
+
   const [form, setForm] = useState({
-    name: "",
-    description: "",
-    price: "",
-    maintenanceIntervalDays: "",
+    name: editingProducts?.name || "",
+    description: editingProducts?.description || "",
+    price: editingProducts?.price?.toString() || "",
+    maintenanceIntervalDays: editingProducts?.maintenanceIntervalDays?.toString() || "",
   });
 
   const [createProduct, { loading, error, data }] = useMutation(CREATE_PRODUCT, {
@@ -31,6 +36,7 @@ export function ProductForm() {
         price: "",
         maintenanceIntervalDays: "",
       });
+      navigate("/products");
     },
   });
 
@@ -46,8 +52,10 @@ export function ProductForm() {
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">Cadastrar Produto</h2>
-      <Card className="p-6 shadow-sm border">
+      <h2 className="text-2xl font-semibold mb-4">
+        {editingProducts ? "Editar Produto" : "Cadastrar Produto"}
+      </h2>
+      <Card className="p-6 shadow-sm border bg-gray-50">
         <CardContent className="p-0">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -99,8 +107,13 @@ export function ProductForm() {
             </div>
 
             <div className="pt-2">
-              <Button type="submit" disabled={loading}>
-                {loading ? "Salvando..." : "Cadastrar Produto"}
+              <Button 
+                type="submit" 
+                disabled={loading}
+                variant="softButton"
+                className="px-4"
+              >
+                {loading ? "Salvando..." : editingProducts ? "Atualizar Produto" : "Cadastrar Produto"}
               </Button>
             </div>
 
