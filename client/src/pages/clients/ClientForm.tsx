@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { CREATE_CLIENT, UPDATE_CLIENT } from "@/mutations/clientCreate.mutation";
 import { Label } from "@/components/ui/label";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ErrorAlert } from "@/components/error/ErrorAlert";
 
 export function ClientForm() {
   const location = useLocation();
@@ -89,11 +90,7 @@ export function ClientForm() {
               </Button>
             </div>
 
-            {error && (
-              <p className="text-sm text-red-500 mt-2">
-                Erro ao cadastrar cliente.
-              </p>
-            )}
+            {error && <ErrorAlert message={error.message} />}
 
             {data && (
               <p className="text-sm text-green-600 mt-2">

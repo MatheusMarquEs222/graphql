@@ -9,4 +9,7 @@ export class MongooseProductRepository implements IProductRepository {
     async findAll(): Promise<IProduct[]> {
         return ProductModel.find();
     }
+    async findByName(name: string): Promise<IProduct | null> {
+        return ProductModel.findOne({ name }); 
+    }
 }
