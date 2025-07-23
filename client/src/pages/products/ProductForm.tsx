@@ -4,13 +4,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CREATE_PRODUCT } from "@/mutations/ProductCreate.mutation";
+import { CREATE_PRODUCT, UPDATE_PRODUCT } from "@/mutations/ProductCreate.mutation";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export function ProductForm() {
   const location = useLocation();
   const navigate = useNavigate();
-  const editingProducts = location.state?.products;
+  const editingProducts = location.state?.product;
 
   const [form, setForm] = useState({
     name: editingProducts?.name || "",
@@ -19,26 +19,42 @@ export function ProductForm() {
     maintenanceIntervalDays: editingProducts?.maintenanceIntervalDays?.toString() || "",
   });
 
-  const [createProduct, { loading, error, data }] = useMutation(CREATE_PRODUCT, {
-    variables: {
-      input: {
-        ...form,
-        price: parseFloat(form.price),
-        maintenanceIntervalDays: form.maintenanceIntervalDays
-          ? parseInt(form.maintenanceIntervalDays)
-          : undefined,
+  const [saveProduct, { loading, error, data }] = useMutation(
+    editingProducts ? UPDATE_PRODUCT : CREATE_PRODUCT,
+    {
+      variables: editingProducts
+        ? {
+            id: editingProducts.id,
+            input: {
+              name: form.name,
+              description: form.description,
+              price: parseFloat(form.price),
+              maintenanceIntervalDays: form.maintenanceIntervalDays
+                ? parseInt(form.maintenanceIntervalDays)
+                : undefined,
+            },
+          }
+        : {
+            input: {
+              name: form.name,
+              description: form.description,
+              price: parseFloat(form.price),
+              maintenanceIntervalDays: form.maintenanceIntervalDays
+                ? parseInt(form.maintenanceIntervalDays)
+                : undefined,
+            },
+          },
+      onCompleted: () => {
+        setForm({
+          name: "",
+          description: "",
+          price: "",
+          maintenanceIntervalDays: "",
+        });
+        navigate("/products");
       },
-    },
-    onCompleted: () => {
-      setForm({
-        name: "",
-        description: "",
-        price: "",
-        maintenanceIntervalDays: "",
-      });
-      navigate("/products");
-    },
-  });
+    }
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -47,7 +63,7 @@ export function ProductForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.description || !form.price) return;
-    createProduct();
+    saveProduct();
   };
 
   return (
@@ -107,24 +123,28 @@ export function ProductForm() {
             </div>
 
             <div className="pt-2">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={loading}
                 variant="softButton"
                 className="px-4"
               >
-                {loading ? "Salvando..." : editingProducts ? "Atualizar Produto" : "Cadastrar Produto"}
+                {loading
+                  ? "Salvando..."
+                  : editingProducts
+                  ? "Atualizar Produto"
+                  : "Cadastrar Produto"}
               </Button>
             </div>
 
             {error && (
               <p className="text-sm text-red-500 mt-2">
-                Erro ao cadastrar produto.
+                Erro ao salvar produto.
               </p>
             )}
             {data && (
               <p className="text-sm text-green-600 mt-2">
-                Produto cadastrado com sucesso!
+                Produto salvo com sucesso!
               </p>
             )}
           </form>
