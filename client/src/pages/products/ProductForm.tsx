@@ -4,36 +4,58 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CREATE_PRODUCT } from "@/mutations/ProductCreate.mutation";
+import { CREATE_PRODUCT, UPDATE_PRODUCT } from "@/mutations/ProductCreate.mutation";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ErrorAlert } from "@/components/error/ErrorAlert";
 
 export function ProductForm() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const editingProducts = location.state?.product;
+
   const [form, setForm] = useState({
-    name: "",
-    description: "",
-    price: "",
-    maintenanceIntervalDays: "",
+    name: editingProducts?.name || "",
+    description: editingProducts?.description || "",
+    price: editingProducts?.price?.toString() || "",
+    maintenanceIntervalDays: editingProducts?.maintenanceIntervalDays?.toString() || "",
   });
 
-  const [createProduct, { loading, error, data }] = useMutation(CREATE_PRODUCT, {
-    variables: {
-      input: {
-        ...form,
-        price: parseFloat(form.price),
-        maintenanceIntervalDays: form.maintenanceIntervalDays
-          ? parseInt(form.maintenanceIntervalDays)
-          : undefined,
+  const [saveProduct, { loading, error, data }] = useMutation(
+    editingProducts ? UPDATE_PRODUCT : CREATE_PRODUCT,
+    {
+      variables: editingProducts
+        ? {
+            id: editingProducts.id,
+            input: {
+              name: form.name,
+              description: form.description,
+              price: parseFloat(form.price),
+              maintenanceIntervalDays: form.maintenanceIntervalDays
+                ? parseInt(form.maintenanceIntervalDays)
+                : undefined,
+            },
+          }
+        : {
+            input: {
+              name: form.name,
+              description: form.description,
+              price: parseFloat(form.price),
+              maintenanceIntervalDays: form.maintenanceIntervalDays
+                ? parseInt(form.maintenanceIntervalDays)
+                : undefined,
+            },
+          },
+      onCompleted: () => {
+        setForm({
+          name: "",
+          description: "",
+          price: "",
+          maintenanceIntervalDays: "",
+        });
+        navigate("/products");
       },
-    },
-    onCompleted: () => {
-      setForm({
-        name: "",
-        description: "",
-        price: "",
-        maintenanceIntervalDays: "",
-      });
-    },
-  });
+    }
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -42,13 +64,15 @@ export function ProductForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.description || !form.price) return;
-    createProduct();
+    saveProduct();
   };
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">Cadastrar Produto</h2>
-      <Card className="p-6 shadow-sm border">
+      <h2 className="text-2xl font-semibold mb-4">
+        {editingProducts ? "Editar Produto" : "Cadastrar Produto"}
+      </h2>
+      <Card className="p-6 shadow-sm border bg-gray-50">
         <CardContent className="p-0">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -100,15 +124,29 @@ export function ProductForm() {
             </div>
 
             <div className="pt-2">
-              <Button type="submit" disabled={loading}>
-                {loading ? "Salvando..." : "Cadastrar Produto"}
+              <Button
+                type="submit"
+                disabled={loading}
+                variant="softButton"
+                className="px-4"
+              >
+                {loading
+                  ? "Salvando..."
+                  : editingProducts
+                  ? "Atualizar Produto"
+                  : "Cadastrar Produto"}
               </Button>
             </div>
 
+            {error && (
+              <p className="text-sm text-red-500 mt-2">
+                Erro ao salvar produto.
+              </p>
+            )}
             { error && <ErrorAlert message={error.message} /> }
             {data && (
               <p className="text-sm text-green-600 mt-2">
-                Produto cadastrado com sucesso!
+                Produto salvo com sucesso!
               </p>
             )}
           </form>

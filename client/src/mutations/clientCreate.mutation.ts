@@ -5,20 +5,36 @@ export const CREATE_CLIENT = gql`
     createClient(input: $input) {
       id
       name
+      cpf
+      rg
       email
       phone
       createdAt
+      address {
+        street
+        number
+        city
+        state
+        zip
+      }
     }
   }
 `;
 
 export const UPDATE_CLIENT = gql`
-  mutation UpdateClient($input: UpdateClientInput!) {
-    updateClient(input: $input) {
+  mutation UpdateClient($id: ID!, $input: UpdateClientInput!) {
+    updateClient(id: $id, input: $input) {
       id
       name
       email
       phone
+      address {
+        street
+        number
+        city
+        state
+        zip
+      }
     }
   }
 `;

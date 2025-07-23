@@ -1,6 +1,7 @@
 import { GraphQLError } from "graphql";
 import { createProductUseCase } from "../../application/usecases/product/createProduct.usecase";
 import { listProductUseCase } from "../../application/usecases/product/listProduct.usecase";
+import { updateProductUseCase } from "../../application/usecases/product/updateProduct.usecase";
 import { MongooseProductRepository } from "../../domain/repositories/mongoose/mongooseProduct.repository";
 import { AppError } from "../../errors/AppError";
 
@@ -31,6 +32,10 @@ const productResolver = {
                 });
             }
         },
+
+        updateProduct: async (_: any, { id, input }: any) => {
+            return updateProductUseCase(id, input, productRepo);
+        }
     },
 }
 

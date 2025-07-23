@@ -1,4 +1,4 @@
-export interface ICreateClientDTO {
+export interface IUpdateClientDTO {
     name: string;
     email: string;
     phone: string;

@@ -8,7 +8,7 @@ const productTypeDefs = gql`
         price: Float!
         maintenanceIntervalDays: Int
     }
-    
+
     input CreateProductInput {
         name: String!
         description: String!
@@ -16,12 +16,20 @@ const productTypeDefs = gql`
         maintenanceIntervalDays: Int
     }
 
+    input UpdateProductInput {
+        name: String
+        description: String
+        price: Float
+        maintenanceIntervalDays: Int
+    }
+
     type Mutation {
         createProduct(input: CreateProductInput!): Product!
+        updateProduct(id: ID!, input: UpdateProductInput!): Product!
     }
 
     type Query {
-        products: [Product!]!  
+        products: [Product!]!
     }
 `;
 

@@ -4,7 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { GET_PRODUCTS } from "@/queries/productQueries";
 import { useQuery } from "@apollo/client";
-import { Plus } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 
@@ -39,7 +39,7 @@ export function ProductList() {
                 ))}
                 </div>
             ) : (
-                <ScrollArea className="h-[600px] rounded-md border p-4">
+                <ScrollArea className="h-[600px] rounded-md border p-4 bg-gray-50">
                 <div className="grid grid-cols-1 gap-4">
                     {data?.products.map((product: any) => (
                         <Card key={product.id}>
@@ -54,6 +54,16 @@ export function ProductList() {
                                         <strong>Manutenção a cada:</strong> {product.maintenanceIntervalDays} dias
                                     </p>
                                 )}
+
+                                <div className="flex flex-col sm:items-end">
+                                    <Button
+                                        variant="link"
+                                        onClick={() => navigate(`/products/new`, { state: { product } })}
+                                        className="text-blue-500 hover:text-blue-700 p-0 h-auto"
+                                    >
+                                        <Pencil className="w-4 h-4 text-muted-foreground"/>
+                                    </Button>
+                                </div>
                             </CardContent>
                         </Card>
                     ))}
