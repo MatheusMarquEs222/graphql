@@ -7,6 +7,7 @@ import { ProductList } from './pages/products/ProductsList';
 import { ScheduleHistoryList } from './pages/scheduleHistory/ScheduleHistoryList';
 import { ClientForm } from './pages/clients/ClientForm';
 import { ProductForm } from './pages/products/ProductForm';
+import { SaleForm } from './pages/sales/SaleForm';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/clients/new" element={<ClientForm />} />
             <Route path="/schedules/all" element={<ScheduleList />} />
             <Route path="/scheduleHistories" element={<ScheduleHistoryList />} />
+            <Route path="/sales/new" element={<SaleForm />} />
             <Route path="/products/all" element={<ProductList />} />
             <Route path="/products/new" element={<ProductForm />} />
           </Routes>

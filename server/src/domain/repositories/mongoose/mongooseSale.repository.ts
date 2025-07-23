@@ -42,10 +42,9 @@ export class MongooseSaleRepository implements ISaleRepository {
             client,
             items: processedItems,
             totalValue,
-            saleDate: new Date(),
+            saleDate: data.saleDate? new Date(data.saleDate) : new Date(),
         });
 
-        // Criação dos agendamentos automáticos
         for (const item of processedItems) {
             const product = await ProductModel.findById(item.product);
 

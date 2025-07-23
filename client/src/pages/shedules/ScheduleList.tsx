@@ -55,7 +55,7 @@ export function ScheduleList() {
 
   return (
     <div className="p-6">
-      <div className="flex flex-wrap gap-4 mb-4 items-end">
+      <div className="flex flex-wrap gap-4 p-4 mb-4 rounded items-end bg-gray-50 border border-gray-200">
         <div>
           <label className="block text-sm mb-1 text-muted-foreground">Status</label>
           <Select onValueChange={(value) => setFilterStatus(value)}>

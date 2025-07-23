@@ -86,7 +86,12 @@ export function Sidebar() {
       className="bg-gray-50 text-zinc-700 h-screen flex flex-col p-3 border-r border-zinc-200"
     >
       <div className="flex items-center justify-between mb-6">
-        {expanded && <span className="text-lg font-bold text-blue-500">Conecta-Waterfall</span>}
+        {
+          expanded && 
+          <span className="text-lg font-bold text-blue-500">
+            <a href="/home">Conecta-Waterfall</a>
+          </span>
+        }
         <Button
           onClick={toggleExpand}
           size="icon"
