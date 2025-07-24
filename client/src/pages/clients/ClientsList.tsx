@@ -36,10 +36,10 @@ export function ClientsList() {
                     <Plus className="w-4 h-4" />
                 </Button>
             </div>
-            <ScrollArea className="h-[600px] rounded-md border p-4 bg-gray-50">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+            <ScrollArea className="max-h-[500px] p-2 overflow-auto">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {data.clients.map((client: any) => (
-                    <Card key={client.id} className="shadow-sm border">
+                    <Card key={client.id} className="shadow-sm border bg-gray-50">
                         <CardContent className="p-4">
                             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                                 <div>

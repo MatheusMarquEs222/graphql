@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GET_SCHEDULE_HISTORIES } from "@/queries/scheduleHistoryQuery";
 import { useQuery } from "@apollo/client";
@@ -43,8 +44,8 @@ export function ScheduleHistoryList() {
   return (
     <div className="p-6 space-y-6">
       <h2 className="text-2xl font-semibold">Relatório de Agendamentos Realizados</h2>
-
-      <div className="flex flex-wrap gap-4">
+      
+      <div className="flex p-6 rounded border border-gray-200 flex-wrap gap-4 bg-gray-50">
         <Select onValueChange={setClientFilter}>
           <SelectTrigger className="w-60">
             <SelectValue placeholder="Filtrar por cliente" />
@@ -78,31 +79,32 @@ export function ScheduleHistoryList() {
           className="w-60"
         />
       </div>
-
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filtered.map((history: any) => (
-          <Card key={history.id} className="bg-gray-50 shadow-sm border">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base text-blue-600 font-semibold">
-                {history.schedule.client.name} - {history.schedule.product.name}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm space-y-1 text-muted-foreground">
-              <p>
-                <strong className="text-black">Data do agendamento:</strong>{" "}
-                {new Date(history.schedule.scheduledDate).toLocaleDateString("pt-BR")}
-              </p>
-              <p>
-                <strong className="text-black">Realizado em:</strong>{" "}
-                {new Date(history.updatedAt).toLocaleDateString("pt-BR")}
-              </p>
-              <p>
-                <strong className="text-black">Status:</strong> {history.status}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <ScrollArea className="max-h-[500px] p-2 overflow-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filtered.map((history: any) => (
+                <Card key={history.id} className="bg-gray-50 shadow-sm border">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base text-blue-600 font-semibold">
+                      {history.schedule.client.name} - {history.schedule.product.name}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-sm space-y-1 text-muted-foreground">
+                    <p>
+                      <strong className="text-black">Data do agendamento:</strong>{" "}
+                      {new Date(history.schedule.scheduledDate).toLocaleDateString("pt-BR")}
+                    </p>
+                    <p>
+                      <strong className="text-black">Realizado em:</strong>{" "}
+                      {new Date(history.updatedAt).toLocaleDateString("pt-BR")}
+                    </p>
+                    <p>
+                      <strong className="text-black">Status:</strong> {history.status}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+        </div>
+      </ScrollArea>
     </div>
   );
 }

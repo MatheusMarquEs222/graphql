@@ -15,12 +15,18 @@ import {
 import { GET_SCHEDULES } from "@/queries/scheduleQueries";
 import { UPDATE_SCHEDULE_STATUS } from "@/mutations/ScheduleUpdate.mutation";
 import { RefreshCcw } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function ScheduleList() {
   const { data, loading, error, refetch } = useQuery(GET_SCHEDULES, {
     fetchPolicy: "network-only",
   });
-  const [updateStatus] = useMutation(UPDATE_SCHEDULE_STATUS);
+
+  const [updateStatus] = useMutation(UPDATE_SCHEDULE_STATUS, {
+    refetchQueries: [{ query: GET_SCHEDULES }],
+    awaitRefetchQueries: true,
+  });
+
   const [filterStatus, setFilterStatus] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -33,6 +39,7 @@ export function ScheduleList() {
         },
       },
     });
+
     refetch();
   };
 
@@ -54,10 +61,11 @@ export function ScheduleList() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-6 space-y-2">
+      <h2 className="text-2xl font-semibold">Agendamentos de Serviços</h2>
       <div className="flex flex-wrap gap-4 p-4 mb-4 rounded items-end bg-gray-50 border border-gray-200">
         <div>
-          <label className="block text-sm mb-1 text-muted-foreground">Status</label>
+          <label className="block text-sm text-muted-foreground">Status</label>
           <Select onValueChange={(value) => setFilterStatus(value)}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Todos" />
@@ -75,7 +83,7 @@ export function ScheduleList() {
         </div>
 
         <div>
-          <label className="block text-sm mb-1 text-muted-foreground">Buscar</label>
+          <label className="block text-sm text-muted-foreground">Buscar</label>
           <Input
             placeholder="Cliente ou Produto"
             value={searchTerm}
@@ -89,39 +97,40 @@ export function ScheduleList() {
           Atualizar
         </Button>
       </div>
-
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredSchedules?.map((schedule: any) => (
-          <Card key={schedule.id} className="shadow-sm border bg-white">
-            <CardContent className="p-4 space-y-2">
-              <div className="space-y-1">
-                <p className="text-base font-semibold text-blue-500">{schedule.client.name}</p>
-                <p className="text-sm text-muted-foreground">Produto: {schedule.product.name}</p>
-                <p className="text-sm text-muted-foreground">
-                  Data: {new Date(schedule.scheduledDate).toLocaleDateString()}
-                </p>
-              </div>
-              <div>
-                <label className="block text-sm mb-1 text-muted-foreground">Status</label>
-                <Select
-                  defaultValue={schedule.status}
-                  onValueChange={(value) => handleStatusChange(schedule.id, value)}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent className="z-50">
-                    <SelectItem value="pending">Pendente</SelectItem>
-                    <SelectItem value="scheduled">Agendado</SelectItem>
-                    <SelectItem value="done">Realizado</SelectItem>
-                    <SelectItem value="late">Atrasado</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <ScrollArea className="max-h-[500px] p-2 overflow-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredSchedules?.map((schedule: any) => (
+            <Card key={schedule.id} className="shadow-sm border bg-white">
+              <CardContent className="p-4 space-y-2">
+                <div className="space-y-1">
+                  <p className="text-base font-semibold text-blue-500">{schedule.client.name}</p>
+                  <p className="text-sm text-muted-foreground">Produto: {schedule.product.name}</p>
+                  <p className="text-sm text-muted-foreground">
+                    Data: {new Date(schedule.scheduledDate).toLocaleDateString()}
+                  </p>
+                </div>
+                <div>
+                  <label className="block text-sm mb-1 text-muted-foreground">Status</label>
+                  <Select
+                    value={schedule.status}
+                    onValueChange={(value) => handleStatusChange(schedule.id, value)}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent className="z-50">
+                      <SelectItem value="pending">Pendente</SelectItem>
+                      <SelectItem value="scheduled">Agendado</SelectItem>
+                      <SelectItem value="done">Realizado</SelectItem>
+                      <SelectItem value="late">Atrasado</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </ScrollArea>
     </div>
   );
 }
