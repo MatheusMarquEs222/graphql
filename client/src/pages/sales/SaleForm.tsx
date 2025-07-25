@@ -22,14 +22,10 @@ export function SaleForm() {
   const { data: clientsData } = useQuery(GET_CLIENTS);
   const { data: productsData } = useQuery(GET_PRODUCTS);
 
-  const [items, setItems] = useState([
-    { productId: "", quantity: 1, price: 0 }
-  ]);
-
   const [form, setForm] = useState({
     clientId: "",
     saleDate: "",
-    items
+    items: [{ productId: "", quantity: 1, price: 0 }]
   });
 
   const [createSale, { loading, error }] = useMutation(CREATE_SALE, {
@@ -50,24 +46,26 @@ export function SaleForm() {
   });
 
   const handleItemChange = (index: number, field: string, value: any) => {
-    const updatedItems: any = [...items];
+    const updatedItems: any = [...form.items];
 
-  if (field === "productId") {
-    updatedItems[index][field] = value;
+    if (field === "productId") {
+      updatedItems[index][field] = value;
 
-    const selectedProduct = productsData?.products.find((p: any) => p.id === value);
-    if (selectedProduct) {
-      updatedItems[index].price = selectedProduct.price;
+      const selectedProduct = productsData?.products.find((p: any) => p.id === value);
+      if (selectedProduct) {
+        updatedItems[index].price = selectedProduct.price;
+      }
+    } else {
+      updatedItems[index][field] = value;
     }
-  } else {
-    updatedItems[index][field] = value;
-  }
 
-  setItems(updatedItems);
+    setForm({ ...form, items: updatedItems });
   };
 
+
   const addItem = () => {
-    setForm({ ...form, items: [...form.items, { productId: "", quantity: 1, price: 0 }] });
+    const updatedItems = [...form.items, { productId: "", quantity: 1, price: 0 }];
+    setForm({ ...form, items: updatedItems });
   };
 
   const removeItem = (index: number) => {
@@ -117,12 +115,12 @@ export function SaleForm() {
             <div className="space-y-4">
               <Label>Produtos</Label>
               {form.items.map((item, index) => (
-                <div key={index} className="grid grid-cols-5 gap-4 items-end">
+                <div key={index} className="grid grid-cols-5 gap-4">
                   <Select
                     onValueChange={(value) => handleItemChange(index, "productId", value)}
                     value={item.productId}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="w-40 p-2 truncate">
                       <SelectValue placeholder="Produto" />
                     </SelectTrigger>
                     <SelectContent>
@@ -131,23 +129,34 @@ export function SaleForm() {
                       ))}
                     </SelectContent>
                   </Select>
+
                   <Input
                     type="number"
                     min={1}
                     value={item.quantity}
                     onChange={(e) => handleItemChange(index, "quantity", parseInt(e.target.value))}
                     placeholder="Qtd"
+                    className="w-24 ml-8"
                   />
+
                   <Input
                     type="number"
                     step="0.01"
                     value={item.price}
                     onChange={(e) => handleItemChange(index, "price", e.target.value)}
                     placeholder="Preço"
+                    className="w-28"
                   />
-                  <p className="text-sm col-span-1">R$ {(item.quantity * parseFloat(String(item.price))).toFixed(2)}</p>
-                  <Button type="button" variant="outline" onClick={() => removeItem(index)}>Remover</Button>
+
+                  <p className="text-sm col-span-1 w-28">
+                    R$ {(item.quantity * parseFloat(String(item.price))).toFixed(2)}
+                  </p>
+
+                  <Button type="button" variant="outline" onClick={() => removeItem(index)} className="w-fit whitespace-nowrap">
+                    Remover
+                  </Button>
                 </div>
+
               ))}
               <Button type="button" onClick={addItem} variant="softButton">Adicionar Produto</Button>
             </div>
