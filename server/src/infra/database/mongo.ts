@@ -2,9 +2,8 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
 dotenv.config({ path: 'src/main/env/.env' });
-const mongoUri = process.env.MONGO_URI;
 
-export async function connectToDatabase(): Promise<void> {
+export async function connectToDatabase(mongoUri: string): Promise<void> {
     if (!mongoUri) {
         console.error('❌ MONGO_URI não definida no arquivo .env')
         process.exit(1);

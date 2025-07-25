@@ -1,15 +1,19 @@
 import { ApolloServer } from 'apollo-server-express';
 import { connectToDatabase } from '../infra/database/mongo';
-import dotenv from 'dotenv';
-
+import cors from 'cors';
+import { env } from './config/env';
 import typeDefs from '../presentation/schemas';
 import resolvers from '../presentation/resolvers';
 import { scheduleLateCheckJob } from '../infra/jobs/checkLateSchedules.job';
 
-dotenv.config({ path: 'src/main/env/.env' });
-
 const startServer = async () => {
     const app = require('express')();
+    const corsOptions = {
+        origin: env.frontednUrl,
+        credentials: true
+    };
+
+    app.use(cors(corsOptions));
 
     const server = new ApolloServer({
         typeDefs,
@@ -17,11 +21,11 @@ const startServer = async () => {
     });
 
     await server.start();
-    server.applyMiddleware({ app });
+    server.applyMiddleware({ app, path: '/graphql' });
 
-    const PORT = process.env.PORT || 4000;
+    const PORT = env.port;
 
-    await connectToDatabase();
+    await connectToDatabase(env.mongoUri);
 
     scheduleLateCheckJob();
     
