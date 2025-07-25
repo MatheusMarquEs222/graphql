@@ -87,10 +87,15 @@ export function Sidebar() {
     >
       <div className="flex items-center justify-between mb-6">
         {
-          expanded && 
-          <span className="text-lg font-bold text-blue-500">
-            <a href="/home">Conecta-Waterfall</a>
-          </span>
+          expanded && (
+            <a href="/home">
+              <img
+                src="/logo.png"
+                alt="Conecta-Waterfall"
+                className="h-8"
+              />
+            </a>
+          )
         }
         <Button
           onClick={toggleExpand}
@@ -102,10 +107,10 @@ export function Sidebar() {
       </div>
 
       <div className="flex items-center gap-3 mb-6">
-        <div className="bg-slate-500 rounded-full w-8 h-8 flex items-center justify-center text-sm">F9</div>
+        <div className="bg-slate-500 rounded-full w-8 h-8 flex items-center justify-center text-sm">Cl</div>
         {expanded && (
           <div>
-            <p className="text-sm font-semibold">Franciele</p>
+            <p className="text-sm font-semibold">Carla</p>
             <p className="text-xs text-zinc-400">Usuário</p>
           </div>
         )}
