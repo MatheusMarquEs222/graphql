@@ -111,6 +111,14 @@ export function Sidebar({ mobileOpen, onClose, onNavigate }: SidebarProps) {
           >
             {expanded ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
           </Button>
+          <Button
+            onClick={onClose}
+            size="icon"
+            className="md:hidden rounded-full border border-zinc-200 bg-gray-100 hover:bg-gray-200"
+            aria-label="Fechar menu"
+          >
+            ✕
+          </Button>
         </div>
       </div>
 
@@ -172,7 +180,6 @@ export function Sidebar({ mobileOpen, onClose, onNavigate }: SidebarProps) {
         ))}
       </nav>
 
-      {/* Rodapé */}
       <div className="mt-auto pt-4 border-t border-zinc-200 space-y-2">
         <Button
           variant="ghost"

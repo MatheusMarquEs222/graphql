@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react"
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom"
+import { 
+  BrowserRouter as Router, 
+  Routes, 
+  Route, 
+  useLocation, 
+  Navigate 
+} from "react-router-dom"
 import { Menu } from "lucide-react"
 import { Sidebar } from "@/components/layout/Sidebar"
 
@@ -16,10 +22,13 @@ function AppShell() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const isDesktop = useIsDesktop()
   const location = useLocation()
+  const [prevPath, setPrevPath] = useState(location.pathname)
 
   useEffect(() => {
-    const isMobile = !isDesktop
-    if (mobileOpen && isMobile) setMobileOpen(false)
+    if (!isDesktop && mobileOpen && location.pathname !== prevPath) {
+      setMobileOpen(false)
+    }
+    setPrevPath(location.pathname)
   }, [location.pathname, isDesktop, mobileOpen])
 
   return (
@@ -54,6 +63,8 @@ function AppShell() {
 
         <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50">
           <Routes>
+            <Route path="/" element={<Navigate to="/clients" replace />} />
+
             <Route path="/clients" element={<ClientsList />} />
             <Route path="/clients/new" element={<ClientForm />} />
             <Route path="/schedules" element={<ScheduleList />} />
@@ -61,6 +72,8 @@ function AppShell() {
             <Route path="/products" element={<ProductList />} />
             <Route path="/products/new" element={<ProductForm />} />
             <Route path="/sales/new" element={<SaleForm />} />
+
+            <Route path="*" element={<Navigate to="/clients" replace />} />
           </Routes>
         </main>
       </div>
