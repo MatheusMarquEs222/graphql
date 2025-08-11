@@ -16,7 +16,7 @@ const clientTypeDefs = gql`
         name: String!
         cpf: String!
         rg: String!
-        email: String!
+        email: String
         phone: String!
         address: Address!
         createdAt: DateTime!
