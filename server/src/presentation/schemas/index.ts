@@ -4,6 +4,7 @@ import productTypeDefs from "./product.schema";
 import saleTypeDefs from "./sale.schema";
 import scheduleTypeDefs from "./schedule.schema";
 import scheduleHistoryTypeDefs from "./schedule-history.schema";
+import authTypeDefs from "./auth.schema";
 
 const rootTypeDefs = gql`
   type Query
@@ -16,5 +17,6 @@ export default [
   productTypeDefs,
   saleTypeDefs,
   scheduleTypeDefs,
-  scheduleHistoryTypeDefs
+  scheduleHistoryTypeDefs,
+  authTypeDefs
 ];
